@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滅火器設置判斷</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            background-color: #f8f9fa;
+        }
+        label, select, input {
+            display: block;
+            margin: 10px 0;
+            width: 100%;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>滅火器設置判斷</h2>
+
+    <label>場所類別：</label>
+    <select id="placeType">
+        <option value="甲類">甲類</option>
+        <option value="乙類">乙類</option>
+        <option value="丙類">丙類</option>
+        <option value="丁類">丁類</option>
+        <option value="其他">其他</option>
+    </select>
+
+    <label>總樓地板面積 (平方公尺)：</label>
+    <input type="number" id="area" placeholder="輸入面積">
+
+    <label>是否設於地下層或無開口樓層 (且樓地板面積>50平方公尺)：</label>
+    <select id="underground">
+        <option value="是">是</option>
+        <option value="否">否</option>
+    </select>
+
+    <label>是否有電氣設備 (如變壓器、配電盤)：</label>
+    <select id="electrical">
+        <option value="是">是</option>
+        <option value="否">否</option>
+    </select>
+
+    <label>是否使用大量火源 (如鍋爐、廚房)：</label>
+    <select id="fireSource">
+        <option value="是">是</option>
+        <option value="否">否</option>
+    </select>
+
+    <button onclick="checkFireExtinguisher()">檢查是否需設置滅火器</button>
+
+    <p id="result"></p>
+
+    <script>
+        function checkFireExtinguisher() {
+            let placeType = document.getElementById("placeType").value;
+            let area = parseFloat(document.getElementById("area").value);
+            let underground = document.getElementById("underground").value;
+            let electrical = document.getElementById("electrical").value;
+            let fireSource = document.getElementById("fireSource").value;
+            
+            let needsExtinguisher = false;
+
+            if (placeType === "甲類" || placeType === "地下建築物" || placeType === "幼兒園") {
+                needsExtinguisher = true;
+            } else if ((placeType === "乙類" || placeType === "丙類" || placeType === "丁類") && area > 150) {
+                needsExtinguisher = true;
+            } else if (underground === "是" && area > 50) {
+                needsExtinguisher = true;
+            } else if (electrical === "是" || fireSource === "是") {
+                needsExtinguisher = true;
+            }
+
+            document.getElementById("result").innerText = needsExtinguisher ? "✅ 需要設置滅火器" : "❌ 不需要設置滅火器";
+        }
+    </script>
+
+</body>
+</html>
